@@ -1,0 +1,90 @@
+version: "3.9"
+
+# ╔══════════════════════════════════════════════════╗
+# ║  CloudGRC-AI — Local Development Compose        ║
+# ║  Run: docker compose -f docker-compose.dev.yml up ║
+# ╚══════════════════════════════════════════════════╝
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cloudgrc_postgres_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:     cloudgrc
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB:       cloudgrc_db
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cloudgrc"]
+      interval: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: cloudgrc_redis_dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: cloudgrc_backend_dev
+    restart: unless-stopped
+    env_file: ./backend/.env.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./scan_engine:/app/scan_engine
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: cloudgrc_celery_dev
+    restart: unless-stopped
+    env_file: ./backend/.env.dev
+    volumes:
+      - ./backend:/app
+      - ./scan_engine:/app/scan_engine
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A backend.workers.celery_app worker --loglevel=debug -Q scans,emails --concurrency=2
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: cloudgrc_frontend_dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+    depends_on:
+      - backend
+
+volumes:
+  postgres_dev_data:
