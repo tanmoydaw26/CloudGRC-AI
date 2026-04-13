@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy:  #1a2940;
+  --teal:  #2a6b7c;
+  --cyber: #00ffe7;
+  --bg:    #010a0e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: #c9e8e0;
+  font-family: "Inter", sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0a1a20; }
+::-webkit-scrollbar-thumb { background: #2a6b7c; border-radius: 3px; }
+
+/* Severity colours */
+.sev-critical { color: #ff003c; }
+.sev-high     { color: #ff6600; }
+.sev-medium   { color: #ffaa00; }
+.sev-low      { color: #00cc66; }
+.sev-info     { color: #888888; }
+
+/* Card */
+.card {
+  background: #0a1a20;
+  border: 1px solid #1e3a45;
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+/* Cyber input */
+.cyber-input {
+  background: #0a1a20;
+  border: 1px solid #2a6b7c;
+  border-radius: 4px;
+  color: #c9e8e0;
+  padding: 0.6rem 0.9rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.cyber-input:focus { border-color: #00ffe7; }
+
+/* Button */
+.btn-primary {
+  background: #2a6b7c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary:hover    { background: #3a8a9e; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-cyber {
+  background: #00ffe7;
+  color: #010a0e;
+  border: none;
+  border-radius: 4px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+  transition: opacity 0.2s;
+}
+.btn-cyber:hover    { opacity: 0.85; }
+.btn-cyber:disabled { opacity: 0.4; cursor: not-allowed; }
