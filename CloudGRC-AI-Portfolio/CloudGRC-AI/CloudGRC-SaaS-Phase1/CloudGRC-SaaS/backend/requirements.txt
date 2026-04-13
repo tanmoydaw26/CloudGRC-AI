@@ -1,0 +1,56 @@
+# Web Framework
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9
+
+# Database
+sqlalchemy==2.0.30
+alembic==1.13.1
+asyncpg==0.29.0
+psycopg2-binary==2.9.9
+
+# Auth & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.1
+cryptography==42.0.7
+
+# Task Queue
+celery==5.4.0
+redis==5.0.4
+flower==2.0.1
+
+# Cloud SDKs
+boto3==1.34.84
+google-cloud-storage==2.16.0
+google-cloud-iam==2.15.1
+google-cloud-compute==1.19.0
+azure-mgmt-resource==23.0.1
+azure-mgmt-storage==21.1.0
+azure-mgmt-network==25.3.0
+azure-identity==1.16.0
+
+# AI & Reporting
+openai==1.30.1
+reportlab==4.2.0
+jinja2==3.1.4
+
+# HTTP & Validation
+httpx==0.27.0
+pydantic==2.7.1
+pydantic-settings==2.2.1
+email-validator==2.1.1
+
+# Billing
+razorpay==1.4.1
+
+# Storage
+boto3==1.34.84
+
+# Monitoring
+sentry-sdk[fastapi]==2.2.0
+
+# Testing
+pytest==8.2.0
+pytest-asyncio==0.23.6
+httpx==0.27.0
