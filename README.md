@@ -1,418 +1,573 @@
-# 🛡️ CloudGRC-AI — Automated Cloud Compliance & Risk Scanner
+<div align="center">
 
-> A production-grade, open-source multi-cloud security scanner that detects misconfigurations across **AWS, GCP, and Azure**, maps every finding to **ISO 27001:2022, NIST CSF, and CIS Benchmarks**, and generates a professional **PDF audit report** — with an AI-written narrative via OpenAI GPT.
+<img src="https://img.shields.io/badge/CloudGRC--AI-v2.0-00ffe7?style=for-the-badge&logo=shield&logoColor=black" />
+<img src="https://img.shields.io/badge/AWS-boto3-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white" />
+<img src="https://img.shields.io/badge/GCP-google--cloud-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white" />
+<img src="https://img.shields.io/badge/Azure-azure--mgmt-00A4EF?style=for-the-badge&logo=microsoftazure&logoColor=white" />
+<img src="https://img.shields.io/badge/FastAPI-0.111-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+<img src="https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js&logoColor=white" />
+<img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+<img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
-![AWS](https://img.shields.io/badge/AWS-boto3-orange?logo=amazonaws&logoColor=white)
-![GCP](https://img.shields.io/badge/GCP-google--cloud-4285F4?logo=googlecloud&logoColor=white)
-![Azure](https://img.shields.io/badge/Azure-azure--mgmt-0078D4?logo=microsoftazure&logoColor=white)
-![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Production--Ready-brightgreen)
+# 🛡️ CloudGRC-AI
+### Automated Cloud Compliance & Risk Scanner
+
+**A production-grade, multi-cloud security scanning SaaS platform.**
+Scans AWS, GCP, and Azure environments for misconfigurations — maps findings to ISO 27001, NIST CSF, and CIS Benchmarks — and generates AI-powered audit reports.
+
+[Live Demo](#) · [API Docs](#api-documentation) · [Report Bug](https://github.com/tanmoydaw26/CloudGRC-AI/issues) · [Request Feature](https://github.com/tanmoydaw26/CloudGRC-AI/issues)
+
+</div>
 
 ---
 
 ## 📋 Table of Contents
 
-- [What It Does](#-what-it-does)
+- [Overview](#-overview)
+- [Features](#-features)
 - [Architecture](#-architecture)
-- [Quick Start — Demo Mode](#-quick-start--demo-mode-no-credentials-needed)
-- [Real Environment Setup](#-real-environment-setup)
-  - [AWS Setup](#-aws-setup)
-  - [GCP Setup](#-gcp-setup)
-  - [Azure Setup](#-azure-setup)
-  - [OpenAI Setup](#-openai-setup-optional)
-- [Running a Real Scan](#-running-a-real-scan)
-- [Getting a PDF Report](#-getting-a-pdf-report)
-- [Streamlit Dashboard](#-streamlit-dashboard)
-- [Security Checks Covered](#-security-checks-covered)
-- [Compliance Frameworks](#-compliance-frameworks)
-- [Troubleshooting](#-troubleshooting)
-- [Built By](#-built-by)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Quick Start](#-quick-start)
+- [Environment Variables](#-environment-variables)
+- [API Documentation](#-api-documentation)
+- [Compliance Mapping](#-compliance-mapping)
+- [Pricing Plans](#-pricing-plans)
+- [Deployment](#-deployment)
+- [CI/CD Pipeline](#-cicd-pipeline)
+- [Security](#-security)
+- [Screenshots](#-screenshots)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
-## 🔍 What It Does
+## 🎯 Overview
 
-- Scans **AWS, GCP, and Azure** for security misconfigurations across IAM, Storage, Network, and Logging
-- Maps every finding to **ISO 27001:2022 Annex A**, **NIST CSF**, and **CIS Benchmark** controls
-- Calculates a **risk score (0–100)** and **compliance percentage**
-- Generates an **AI-written audit report** with Executive Summary, Business Impact, and Remediation Plan
-- Exports **PDF, JSON, and CSV** audit reports
-- Includes a full **Streamlit dashboard UI**
+**CloudGRC-AI** is a full-stack SaaS platform that automates cloud security compliance scanning across AWS, GCP, and Azure. It is built for security engineers, GRC analysts, and compliance teams who need audit-ready reports mapped to international frameworks.
+
+### What It Does
+
+```
+Your Cloud Environment
+        │
+        ▼
+┌───────────────────────────────────────────┐
+│           CloudGRC-AI Scanner             │
+│                                           │
+│  IAM Checks → Storage Checks → Network   │
+│  Checks → Logging Checks                 │
+└───────────────────┬───────────────────────┘
+                    │
+                    ▼
+        Compliance Mapping Engine
+        ISO 27001 │ NIST CSF │ CIS
+                    │
+                    ▼
+          AI Report Generator (GPT)
+                    │
+                    ▼
+    PDF Report │ JSON Export │ Dashboard
+```
+
+---
+
+## ✨ Features
+
+### 🔍 Security Checks
+
+| Category | Check | AWS | GCP | Azure |
+|---|---|:---:|:---:|:---:|
+| **IAM** | Overly permissive roles (`*:*`) | ✅ | ✅ | ✅ |
+| **IAM** | MFA disabled users | ✅ | ✅ | ✅ |
+| **IAM** | Root / super-admin account usage | ✅ | ✅ | ✅ |
+| **IAM** | Stale access keys (>90 days) | ✅ | — | — |
+| **Storage** | Public S3 / GCS / Blob exposure | ✅ | ✅ | ✅ |
+| **Storage** | Encryption disabled | ✅ | ✅ | ✅ |
+| **Storage** | HTTPS not enforced | ✅ | ✅ | ✅ |
+| **Network** | Open ports to `0.0.0.0/0` | ✅ | ✅ | ✅ |
+| **Network** | Misconfigured firewall rules | ✅ | ✅ | ✅ |
+| **Network** | VPC flow logs disabled | ✅ | ✅ | — |
+| **Logging** | CloudTrail / Audit log disabled | ✅ | ✅ | ✅ |
+| **Logging** | Log retention < 90 days | ✅ | ✅ | ✅ |
+| **Logging** | Monitoring / alerts not configured | ✅ | ✅ | ✅ |
+
+### 🗺️ Compliance Mapping Engine
+Every finding is automatically mapped to:
+- **ISO 27001:2022** — Annex A controls (A.5 through A.18)
+- **NIST CSF 2.0** — Identify, Protect, Detect, Respond, Recover
+- **CIS Benchmarks** — Controls 1–18
+
+### 🤖 AI Report Generator
+- Executive Summary for C-suite
+- Technical Findings for security teams
+- Business Impact analysis
+- Step-by-step Remediation Plan
+- Powered by **OpenAI GPT-4o-mini** with template fallback
+
+### 📊 Risk Scoring
+- Severity: **Critical / High / Medium / Low / Info**
+- Risk Score: **0–100** (weighted by severity count)
+- Compliance Percentage: **0–100%**
+
+### 💳 SaaS Billing
+- Free / Starter / Pro / Enterprise tiers
+- **Razorpay** payment gateway (INR)
+- Monthly scan quota enforcement
+- Automatic plan upgrade on payment verification
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-CloudGRC-AI/
-├── connectors/
-│   ├── aws.py            ← boto3 authentication & session
-│   ├── gcp.py            ← Google Cloud SDK authentication
-│   └── azure.py          ← Azure Service Principal authentication
-├── checks/
-│   ├── iam.py            ← MFA, root usage, wildcard policies, stale keys
-│   ├── storage.py        ← Public buckets, encryption, HTTPS enforcement
-│   ├── network.py        ← Open ports, 0.0.0.0/0 rules, VPC flow logs
-│   └── logging.py        ← CloudTrail, log sinks, retention policies
-├── compliance/
-│   └── mapping.py        ← ISO 27001, NIST CSF, CIS mapping + risk scoring
-├── reporting/
-│   ├── ai_summary.py     ← OpenAI GPT narrative + template fallback
-│   └── pdf_generator.py  ← ReportLab PDF with cover page and findings table
-├── main.py               ← CLI orchestrator
-├── app.py                ← Streamlit dashboard
-├── requirements.txt
-└── .env.example
+┌─────────────────────────────────────────────────────────┐
+│                      NGINX (SSL/TLS)                    │
+│              Rate Limiting + Security Headers           │
+└──────────────────┬────────────────┬────────────────────┘
+                   │                │
+          ┌────────▼──────┐  ┌──────▼────────┐
+          │  Next.js 14   │  │  FastAPI       │
+          │  Frontend     │  │  Backend       │
+          │  (Port 3000)  │  │  (Port 8000)   │
+          └───────────────┘  └──────┬─────────┘
+                                    │
+                    ┌───────────────┼───────────────┐
+                    │               │               │
+             ┌──────▼─────┐ ┌──────▼─────┐ ┌──────▼──────┐
+             │ PostgreSQL  │ │   Redis    │ │   Celery    │
+             │  (DB)       │ │  (Cache/   │ │  Worker     │
+             │             │ │   Queue)   │ │  (Scans)    │
+             └─────────────┘ └────────────┘ └─────────────┘
+                                                   │
+                              ┌────────────────────┘
+                              │
+              ┌───────────────▼──────────────────┐
+              │         Scan Engine              │
+              │  AWS (boto3) │ GCP │ Azure SDK   │
+              │  IAM · Storage · Network · Logs  │
+              │  Compliance Mapping Engine       │
+              │  AI Report (OpenAI)              │
+              │  PDF Generator (ReportLab)       │
+              └──────────────────────────────────┘
 ```
 
 ---
 
-## ⚡ Quick Start — Demo Mode (No Credentials Needed)
+## 🛠️ Tech Stack
 
-> Works immediately on any machine. Uses 14 built-in realistic findings.
+| Layer | Technology |
+|---|---|
+| **Frontend** | Next.js 14, TypeScript, Tailwind CSS, Recharts, Zustand, React Query |
+| **Backend** | FastAPI, Python 3.12, SQLAlchemy (async), Pydantic v2 |
+| **Database** | PostgreSQL 16 (findings stored as JSONB) |
+| **Task Queue** | Celery + Redis |
+| **Cloud SDKs** | boto3 (AWS), google-cloud SDK (GCP), azure-mgmt (Azure) |
+| **AI** | OpenAI GPT-4o-mini |
+| **PDF** | ReportLab |
+| **Payments** | Razorpay |
+| **Auth** | JWT (access + refresh tokens), bcrypt, Fernet encryption |
+| **Infra** | Docker Compose, Nginx, Let's Encrypt (certbot) |
+| **CI/CD** | GitHub Actions |
+| **Monitoring** | Celery Flower, Prometheus-ready |
+
+---
+
+## 📁 Project Structure
+
+```
+CloudGRC-AI/
+│
+├── 📂 backend/                    # FastAPI Backend
+│   ├── core/
+│   │   ├── config.py              # Pydantic settings
+│   │   └── security.py            # JWT + bcrypt + Fernet
+│   ├── db/
+│   │   └── base.py                # Async SQLAlchemy engine
+│   ├── api/
+│   │   ├── models/                # SQLAlchemy ORM models
+│   │   │   ├── user.py
+│   │   │   ├── scan.py
+│   │   │   └── credential.py
+│   │   ├── schemas/               # Pydantic request/response schemas
+│   │   ├── routes/                # API route handlers
+│   │   │   ├── auth.py
+│   │   │   ├── scans.py
+│   │   │   ├── credentials.py
+│   │   │   ├── billing.py
+│   │   │   └── dashboard.py
+│   │   ├── services/              # Business logic layer
+│   │   └── middleware/            # JWT auth + rate limiter
+│   ├── workers/
+│   │   ├── celery_app.py          # Celery configuration
+│   │   └── tasks.py               # Async scan execution task
+│   └── main.py                    # FastAPI app entry point
+│
+├── 📂 scan_engine/                # Cloud Security Scanner
+│   ├── connectors/
+│   │   ├── aws.py                 # boto3 session management
+│   │   ├── gcp.py                 # Google Cloud auth
+│   │   └── azure.py               # Azure Service Principal
+│   ├── checks/
+│   │   ├── iam.py                 # IAM security checks
+│   │   ├── storage.py             # Storage checks
+│   │   ├── network.py             # Network/firewall checks
+│   │   └── logging.py             # Logging/monitoring checks
+│   ├── compliance/
+│   │   └── mapping.py             # ISO 27001 · NIST · CIS mapping
+│   └── reporting/
+│       ├── ai_summary.py          # OpenAI GPT report
+│       └── pdf_generator.py       # ReportLab PDF
+│
+├── 📂 frontend/                   # Next.js 14 Frontend
+│   └── src/
+│       ├── app/
+│       │   ├── (auth)/            # Login + Register pages
+│       │   └── (dashboard)/       # Protected dashboard pages
+│       │       ├── dashboard/     # Overview + charts
+│       │       ├── scans/         # Scan list + detail + findings
+│       │       ├── credentials/   # Cloud credential management
+│       │       ├── billing/       # Pricing + Razorpay checkout
+│       │       └── settings/      # Profile + security
+│       ├── services/api.ts        # Axios client + interceptors
+│       ├── store/authStore.ts     # Zustand global auth state
+│       └── types/index.ts         # TypeScript interfaces
+│
+├── 📂 infrastructure/
+│   ├── nginx/
+│   │   ├── nginx.prod.conf        # Production: SSL + rate limiting
+│   │   └── nginx.dev.conf         # Development: HTTP only
+│   └── postgres/
+│       └── init.sql               # DB extensions init
+│
+├── 📂 scripts/
+│   ├── deploy.sh                  # One-command EC2 deployment
+│   ├── update.sh                  # Zero-downtime rolling update
+│   ├── backup.sh                  # PostgreSQL → S3 backup
+│   └── setup_dev.sh               # Local dev environment setup
+│
+├── 📂 .github/workflows/
+│   └── deploy.yml                 # CI/CD: test → build → deploy
+│
+├── docker-compose.prod.yml        # Production: 8 services
+├── docker-compose.dev.yml         # Development: 5 services
+├── .env.production.example        # Environment variable template
+└── README.md
+```
+
+---
+
+## 🚀 Quick Start
+
+### Option A — Local Development (Recommended for beginners)
+
+**Prerequisites:** Docker Desktop installed
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/tanmoydaw26/CloudGRC-AI
+git clone https://github.com/tanmoydaw26/CloudGRC-AI.git
 cd CloudGRC-AI
 
-# 2. Create and activate a virtual environment
-python3 -m venv venv
-source venv/bin/activate          # Windows: venv\Scripts\activate
+# 2. Run the automated setup script
+chmod +x scripts/setup_dev.sh
+./scripts/setup_dev.sh
 
-# 3. Install dependencies
+# 3. Open your browser
+# Frontend:  http://localhost:3000
+# API Docs:  http://localhost:8000/api/docs
+# Flower:    http://localhost:5555
+```
+
+### Option B — Manual Setup
+
+```bash
+# 1. Clone
+git clone https://github.com/tanmoydaw26/CloudGRC-AI.git
+cd CloudGRC-AI
+
+# 2. Set up environment
+cp .env.production.example backend/.env.dev
+# Edit backend/.env.dev with your values
+
+cp frontend/.env.local.example frontend/.env.local
+# Edit frontend/.env.local
+
+# 3. Start with Docker Compose
+docker compose -f docker-compose.dev.yml up --build
+
+# 4. Access
+# Frontend:  http://localhost:3000
+# API:       http://localhost:8000
+# API Docs:  http://localhost:8000/api/docs
+```
+
+### Option C — Run Without Docker (Pure Python + Node)
+
+```bash
+# Backend
+cd backend
+python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
+uvicorn backend.main:app --reload --port 8000
 
-# 4. Run demo scan (no credentials needed)
-python main.py --mock --org "Your Organisation"
-
-# 5. Launch the dashboard
-streamlit run app.py
-# Opens at http://localhost:8501
-# Tick "Use Mock Data" in the sidebar → click RUN SCAN
+# In a new terminal — Frontend
+cd frontend
+npm install
+npm run dev
 ```
 
 ---
 
-## 🔐 Real Environment Setup
+## 🔐 Environment Variables
 
-### Step 1 — Create Your .env File
+Copy `.env.production.example` to `.env` and fill in these required values:
 
-```bash
-cp .env.example .env
-nano .env          # or use any text editor
+| Variable | Description | Required |
+|---|---|:---:|
+| `SECRET_KEY` | JWT signing key (64 chars) — `openssl rand -hex 32` | ✅ |
+| `FERNET_KEY` | AES-256 encryption key — see below | ✅ |
+| `DATABASE_URL` | PostgreSQL async connection string | ✅ |
+| `REDIS_URL` | Redis connection string | ✅ |
+| `RAZORPAY_KEY_ID` | Razorpay API key ID | ✅ |
+| `RAZORPAY_KEY_SECRET` | Razorpay secret key | ✅ |
+| `OPENAI_API_KEY` | OpenAI API key (for AI reports) | ⚪ Optional |
+| `AWS_ACCESS_KEY_ID` | AWS key for S3 PDF storage | ⚪ Optional |
+| `SMTP_USER` | SMTP email for notifications | ⚪ Optional |
+| `SENTRY_DSN` | Sentry error tracking | ⚪ Optional |
+
+**Generate a Fernet key:**
+```python
+from cryptography.fernet import Fernet
+print(Fernet.generate_key().decode())
 ```
-
-Fill in the credentials for the cloud providers you want to scan:
-
-```bash
-# ── AWS ──────────────────────────────────────────
-AWS_ACCESS_KEY_ID=AKIAxxxxxxxxxxxxxxxxx
-AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-AWS_DEFAULT_REGION=ap-south-1
-
-# ── GCP ──────────────────────────────────────────
-GCP_PROJECT_ID=your-gcp-project-id
-GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/gcp-service-account.json
-
-# ── Azure ─────────────────────────────────────────
-AZURE_SUBSCRIPTION_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-AZURE_TENANT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-AZURE_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-AZURE_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-# ── OpenAI (optional — AI report narrative) ───────
-OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
-
-Save and close: **Ctrl+O → Enter → Ctrl+X**
 
 ---
 
-### ☁️ AWS Setup
+## 📡 API Documentation
 
-#### 1. Create an IAM User for CloudGRC-AI
+Interactive docs available at `/api/docs` (Swagger UI) and `/api/redoc`.
 
-1. Go to **AWS Console → IAM → Users → Create User**
-2. Name: `cloudgrc-scanner` (or any name)
-3. Select **"Attach policies directly"**
-4. Click **"Create inline policy"** and paste this JSON:
+### Authentication
+```
+POST /api/v1/auth/register   — Create account
+POST /api/v1/auth/login      — Login, receive JWT tokens
+POST /api/v1/auth/refresh    — Refresh access token
+GET  /api/v1/auth/me         — Get current user profile
+```
 
+### Scans
+```
+POST   /api/v1/scans          — Trigger new scan
+GET    /api/v1/scans          — List all scans (paginated)
+GET    /api/v1/scans/{id}     — Full scan detail + findings + AI report
+GET    /api/v1/scans/{id}/download — Download PDF report
+DELETE /api/v1/scans/{id}     — Delete scan record
+```
+
+### Credentials
+```
+POST   /api/v1/credentials    — Save encrypted cloud credentials
+GET    /api/v1/credentials    — List saved credentials (labels only)
+DELETE /api/v1/credentials/{id} — Delete credential
+```
+
+### Billing
+```
+GET  /api/v1/billing/plans    — List all pricing plans
+POST /api/v1/billing/order    — Create Razorpay payment order
+POST /api/v1/billing/verify   — Verify payment + upgrade plan
+GET  /api/v1/billing/status   — Current plan and usage
+```
+
+### Dashboard
+```
+GET /api/v1/dashboard/stats   — Aggregated stats + recent scans
+```
+
+### Sample Finding Response
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "iam:ListUsers",
-        "iam:ListMFADevices",
-        "iam:GetAccountSummary",
-        "iam:ListAccessKeys",
-        "iam:ListAttachedUserPolicies",
-        "iam:ListUserPolicies",
-        "iam:GetLoginProfile",
-        "s3:ListAllMyBuckets",
-        "s3:GetBucketAcl",
-        "s3:GetBucketEncryption",
-        "s3:GetBucketLogging",
-        "s3:GetBucketVersioning",
-        "s3:GetBucketPublicAccessBlock",
-        "ec2:DescribeSecurityGroups",
-        "ec2:DescribeInstances",
-        "ec2:DescribeVpcs",
-        "ec2:DescribeFlowLogs",
-        "cloudtrail:DescribeTrails",
-        "cloudtrail:GetTrailStatus",
-        "cloudwatch:DescribeAlarms",
-        "config:DescribeConfigurationRecorders"
-      ],
-      "Resource": "*"
-    }
-  ]
+  "cloud": "AWS",
+  "category": "IAM",
+  "issue": "Root account does not have MFA enabled",
+  "resource": "root-account",
+  "severity": "Critical",
+  "detail": "AWS root account MFA is disabled. This is a critical risk.",
+  "frameworks": {
+    "ISO27001": "A.9.2 — User Access Management; A.9.4 — System Access Control",
+    "NIST_CSF": "PR.AC-1: Identities and credentials are managed",
+    "CIS": "CIS Control 5: Account Management"
+  }
 }
 ```
 
-5. Name the policy: `CloudGRC-ReadOnly`
-6. Click **Create User**
+---
 
-#### 2. Generate Access Keys
+## 🗺️ Compliance Mapping
 
-1. Click your new user → **Security credentials** tab
-2. Click **Create access key** → Select **"Application running outside AWS"**
-3. Copy the **Access Key ID** and **Secret Access Key** into your `.env` file
-
-> ⚠️ **Security Note:** These are read-only permissions. CloudGRC-AI never modifies your environment.
+| Severity | ISO 27001 Controls | NIST CSF | CIS Controls |
+|---|---|---|---|
+| Critical IAM | A.9.2, A.9.4 | PR.AC-1, PR.AC-6 | CIS 5, CIS 6 |
+| Storage Public | A.8.2, A.13.1 | PR.DS-1, PR.DS-5 | CIS 3, CIS 13 |
+| Network Open | A.13.1, A.13.2 | PR.AC-5, DE.CM-1 | CIS 12 |
+| Logging Disabled | A.12.4, A.16.1 | DE.CM-1, DE.CM-7 | CIS 8 |
+| Encryption Off | A.10.1, A.8.2 | PR.DS-1, PR.DS-2 | CIS 3, CIS 10 |
 
 ---
 
-### 🌐 GCP Setup
+## 💰 Pricing Plans
 
-#### 1. Create a Service Account
-
-```bash
-# Using gcloud CLI
-gcloud iam service-accounts create cloudgrc-scanner     --description="CloudGRC-AI read-only scanner"     --display-name="CloudGRC Scanner"
-```
-
-#### 2. Assign Read-Only Roles
-
-```bash
-PROJECT_ID="your-project-id"
-SA_EMAIL="cloudgrc-scanner@${PROJECT_ID}.iam.gserviceaccount.com"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID     --member="serviceAccount:${SA_EMAIL}"     --role="roles/viewer"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID     --member="serviceAccount:${SA_EMAIL}"     --role="roles/iam.securityReviewer"
-```
-
-#### 3. Download Service Account Key
-
-```bash
-gcloud iam service-accounts keys create gcp-creds.json     --iam-account=$SA_EMAIL
-
-# Move to project folder
-mv gcp-creds.json /home/kali/CloudGRC-AI/gcp-creds.json
-```
-
-Update your `.env`:
-```bash
-GCP_PROJECT_ID=your-project-id
-GOOGLE_APPLICATION_CREDENTIALS=/home/kali/CloudGRC-AI/gcp-creds.json
-```
+| Feature | Free | Starter ₹999/mo | Pro ₹2999/mo | Enterprise |
+|---|:---:|:---:|:---:|:---:|
+| Scans per month | 1 (demo) | 10 | Unlimited | Unlimited |
+| Real cloud scan | ❌ | ✅ (1 cloud) | ✅ (all 3) | ✅ |
+| PDF reports | ❌ | ✅ | ✅ | ✅ |
+| AI reports | ❌ | ❌ | ✅ | ✅ |
+| API access | ❌ | ❌ | ✅ | ✅ |
+| White-label | ❌ | ❌ | ❌ | ✅ |
+| SLA | ❌ | ❌ | ❌ | ✅ |
+| Support | Community | Email | Priority | Dedicated |
 
 ---
 
-### 🔵 Azure Setup
+## ☁️ Deployment
 
-#### 1. Create a Service Principal
-
-```bash
-# Using Azure CLI
-az login
-
-az ad sp create-for-rbac     --name "cloudgrc-scanner"     --role "Reader"     --scopes /subscriptions/YOUR_SUBSCRIPTION_ID
-```
-
-This outputs:
-```json
-{
-  "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-  "password": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-  "tenant": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-}
-```
-
-Copy these values into `.env`:
-```bash
-AZURE_SUBSCRIPTION_ID=YOUR_SUBSCRIPTION_ID
-AZURE_TENANT_ID=tenant value above
-AZURE_CLIENT_ID=appId value above
-AZURE_CLIENT_SECRET=password value above
-```
-
----
-
-### 🤖 OpenAI Setup (Optional)
-
-The AI report works without OpenAI — it falls back to a structured template.
-To enable GPT-written narrative:
-
-1. Go to **platform.openai.com → API Keys → Create new secret key**
-2. Add to `.env`:
-```bash
-OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
-
-> GPT-4o-mini is used by default (low cost — typically under $0.01 per report).
-
----
-
-## 🚀 Running a Real Scan
+### Deploy to AWS EC2 (One Command)
 
 ```bash
-# Activate your virtual environment first
-source venv/bin/activate
+# SSH into your Ubuntu 22.04/24.04 EC2 instance
+ssh -i your-key.pem ubuntu@YOUR_EC2_IP
 
-# Load credentials from .env
-export $(grep -v '^#' .env | xargs)
+# Upload project
+# (from local machine)
+scp -r CloudGRC-AI/ ubuntu@YOUR_EC2_IP:/opt/cloudgrc
 
-# Scan AWS only
-python main.py --providers aws --org "Your Company Name"
-
-# Scan GCP only
-python main.py --providers gcp --org "Your Company Name"
-
-# Scan Azure only
-python main.py --providers azure --org "Your Company Name"
-
-# Scan all three clouds at once
-python main.py --providers aws gcp azure --org "Your Company Name"
+# On server — fill in .env then run:
+sudo /opt/cloudgrc/scripts/deploy.sh your-domain.com your@email.com
 ```
 
----
+The deploy script automatically:
+- ✅ Installs Docker and Docker Compose
+- ✅ Configures UFW firewall (ports 22, 80, 443 only)
+- ✅ Enables fail2ban
+- ✅ Obtains Let's Encrypt SSL certificate
+- ✅ Builds all Docker images
+- ✅ Starts all 8 services
+- ✅ Sets up SSL auto-renewal cron
 
-## 📄 Getting a PDF Report
+### Alternative Platforms
 
-### Option 1 — Automatic (CLI)
-
-The PDF is generated automatically after every scan:
-
-```bash
-python main.py --providers aws --org "Your Company"
-# PDF saved to: reports/cloudgrc_report_YYYYMMDD_HHMMSS.pdf
-ls -la reports/
-```
-
-### Option 2 — Streamlit Dashboard
-
-```bash
-streamlit run app.py
-```
-
-1. Open **http://localhost:8501**
-2. Enter your credentials in the sidebar (or upload `.env`)
-3. Untick **"Use Mock Data"**
-4. Select your cloud provider(s)
-5. Click **▶ RUN SCAN**
-6. Scroll to **Export Reports** section
-7. Click **⬇ Download PDF**
-
-### Fix PDF Not Generating
-
-```bash
-pip install reportlab
-python -c "from reporting.pdf_generator import generate_pdf_report; print('PDF OK')"
-```
-
----
-
-## 📊 Streamlit Dashboard
-
-```bash
-source venv/bin/activate
-streamlit run app.py
-```
-
-| Feature | Description |
+| Platform | Command |
 |---|---|
-| Multi-cloud selector | Choose AWS, GCP, Azure or all three |
-| Mock mode | Demo with 14 realistic findings — no credentials needed |
-| Findings table | Filter by severity, cloud, and category |
-| Risk gauge | Visual risk score 0–100 |
-| Severity pie chart | Breakdown by Critical / High / Medium / Low |
-| AI report tabs | Executive Summary, Technical Findings, Business Impact, Remediation |
-| Export buttons | Download PDF, JSON, CSV in one click |
+| **Railway** | Connect GitHub repo → set env vars → deploy |
+| **Render** | `render.yaml` supported — contact for template |
+| **DigitalOcean** | Same as EC2 — use `deploy.sh` on Ubuntu droplet |
+| **Vercel (frontend only)** | `cd frontend && vercel --prod` |
 
 ---
 
-## 🔎 Security Checks Covered
+## 🔄 CI/CD Pipeline
 
-| Category | Check | Severity |
-|---|---|---|
-| **IAM** | Root account MFA disabled | Critical |
-| **IAM** | Users without MFA | High |
-| **IAM** | Wildcard `*` policies attached | High |
-| **IAM** | Access keys not rotated in 90+ days | Medium |
-| **Storage** | S3 / GCS bucket publicly accessible | Critical |
-| **Storage** | Encryption at rest disabled | High |
-| **Storage** | Access logging disabled | Medium |
-| **Network** | Port 22 (SSH) open to 0.0.0.0/0 | Critical |
-| **Network** | Port 3389 (RDP) open to 0.0.0.0/0 | Critical |
-| **Network** | Port 3306 (MySQL) open to 0.0.0.0/0 | High |
-| **Network** | VPC Flow Logs disabled | Medium |
-| **Logging** | CloudTrail disabled | Critical |
-| **Logging** | No multi-region CloudTrail | High |
-| **Logging** | CloudWatch alarms not configured | Medium |
+Every push to `main` triggers:
 
----
+```
+Push to main
+     │
+     ▼
+┌─────────────────┐    ┌──────────────────┐
+│  Test Backend   │    │  Test Frontend   │
+│  pytest + lint  │    │  TypeScript + ESLint │
+└────────┬────────┘    └────────┬─────────┘
+         └──────────┬───────────┘
+                    ▼
+         ┌──────────────────────┐
+         │  Build Docker Images │
+         │  Push to GHCR        │
+         └──────────┬───────────┘
+                    ▼
+         ┌──────────────────────┐
+         │  SSH → EC2           │
+         │  docker compose pull │
+         │  Zero-downtime restart│
+         └──────────────────────┘
+```
 
-## 📋 Compliance Frameworks
+**Required GitHub Secrets:**
 
-| Framework | Controls Mapped |
-|---|---|
-| **ISO/IEC 27001:2022** | Annex A — A.5, A.8, A.9, A.10, A.12, A.13 |
-| **NIST Cybersecurity Framework** | PR.AC, PR.DS, PR.IP, DE.CM, RS.AN |
-| **CIS Benchmarks** | Controls 3, 5, 6, 8, 12, 13 |
-
----
-
-## 🛠️ Troubleshooting
-
-| Error | Fix |
-|---|---|
-| `externally-managed-environment` | Use `python3 -m venv venv && source venv/bin/activate` before pip install |
-| `main.py not found` | Run from the `CloudGRC-AI` root directory, not a subfolder |
-| `streamlit: command not found` | Run `pip install streamlit` inside the venv |
-| `NoCredentialsError` | Run `export $(grep -v '^#' .env \| xargs)` to load your .env |
-| `PDF not generating` | Run `pip install reportlab` |
-| `ModuleNotFoundError` | Make sure venv is active: `source venv/bin/activate` |
-| GCP `DefaultCredentialsError` | Set `GOOGLE_APPLICATION_CREDENTIALS` to the full absolute path of your JSON key |
-| Azure `AuthenticationError` | Verify all four Azure variables are set in `.env` |
+```
+EC2_HOST              → Your server IP
+EC2_SSH_KEY           → Your .pem file contents
+DOMAIN                → your-domain.com
+NEXT_PUBLIC_API_URL   → https://your-domain.com/api/v1
+NEXT_PUBLIC_RAZORPAY_KEY_ID → rzp_live_xxx
+```
 
 ---
 
-## 👤 Built By
+## 🔒 Security
 
-**Tanmoy Daw** — Cybersecurity GRC Consultant & Information Security Auditor
+This project follows security best practices:
 
-CERT-In Empanelled | ISO 27001:2022 Lead Auditor | CEH v13 Master | CPENT v2 | DPDPA Act 2023
+- **No hardcoded credentials** — all secrets via environment variables
+- **AES-256 encryption** (Fernet) for all stored cloud credentials
+- **JWT authentication** with short-lived access tokens + refresh tokens
+- **bcrypt** password hashing (cost factor 12)
+- **Rate limiting** — 30 req/min per IP on API, 10 req/min on auth
+- **Security headers** — HSTS, CSP, X-Frame-Options, X-Content-Type-Options
+- **TLS 1.2/1.3 only** — older protocols disabled in Nginx
+- **Non-root Docker containers** — all services run as `appuser` (UID 1000)
+- **Internal Docker network** — DB and Redis not exposed to public
+- **Principle of least privilege** — IAM roles use minimal permissions
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-tanmoy--daw-0077B5?logo=linkedin)](https://linkedin.com/in/tanmoy-daw-a27a162aa)
-[![GitHub](https://img.shields.io/badge/GitHub-tanmoydaw26-181717?logo=github)](https://github.com/tanmoydaw26)
-[![TryHackMe](https://img.shields.io/badge/TryHackMe-Top%202%25-red?logo=tryhackme)](https://tryhackme.com/p/BORDA26)
-[![Portfolio](https://img.shields.io/badge/Portfolio-tanmoydaw26.github.io-00ffe7)](https://tanmoydaw26.github.io/portfolio)
+### Responsible Disclosure
+
+Found a security issue? Email: **security@cloudgrc.ai**
+Please do NOT create public GitHub issues for security vulnerabilities.
 
 ---
 
-## 📜 License
+## 🤝 Contributing
 
-MIT License — free to use, modify, and distribute with attribution.
+Contributions are welcome! Here is how:
+
+```bash
+# 1. Fork the repository
+# 2. Create your feature branch
+git checkout -b feature/AmazingFeature
+
+# 3. Make changes and commit
+git commit -m "Add: AmazingFeature"
+
+# 4. Push to your branch
+git push origin feature/AmazingFeature
+
+# 5. Open a Pull Request
+```
+
+Please follow the existing code style and add tests for new features.
 
 ---
 
-> ⚠️ **Disclaimer:** CloudGRC-AI performs read-only operations only. It never modifies, deletes,
-> or writes to your cloud environment. Always follow your organisation's change management
-> and security policies before running any security tool against production environments.
+## 📄 License
+
+Distributed under the **MIT License**. See `LICENSE` for details.
+
+---
+
+## 👨‍💻 Author
+
+**Tanmoy Daw**
+Cybersecurity & Data Privacy Compliance Professional
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/tanmoydaw26)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/tanmoydaw26)
+
+---
+
+<div align="center">
+
+**⭐ If this project helped you, please give it a star on GitHub!**
+
+Made with ❤️ in Kolkata, India 🇮🇳
+
+</div>
